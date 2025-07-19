@@ -5164,11 +5164,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\user\\source\\repos\\InventoryApi\\InventoryApi\\InventoryApi.csproj",
+      "projectUniqueName": "C:\\Users\\user\\Desktop\\My Projects\\E-Commerce\\InventoryApi\\InventoryApi\\InventoryApi.csproj",
       "projectName": "InventoryApi",
-      "projectPath": "C:\\Users\\user\\source\\repos\\InventoryApi\\InventoryApi\\InventoryApi.csproj",
+      "projectPath": "C:\\Users\\user\\Desktop\\My Projects\\E-Commerce\\InventoryApi\\InventoryApi\\InventoryApi.csproj",
       "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\user\\source\\repos\\InventoryApi\\InventoryApi\\obj\\",
+      "outputPath": "C:\\Users\\user\\Desktop\\My Projects\\E-Commerce\\InventoryApi\\InventoryApi\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\DevExpress 23.2\\Components\\Offline Packages",
