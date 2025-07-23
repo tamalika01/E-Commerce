@@ -9,7 +9,7 @@ namespace InventoryApi.Service
             List<Item> GetAllItems();
             Item GetItemById(Guid id);
             Item AddItem(AddItemDto addItemDto);
-            Item UpdateItem(Guid id, UpdateitemDto updateItemDto);
+            Item UpdateItem( UpdateitemDto updateItemDto);
             bool DeleteItem(Guid id);
         
     }

@@ -49,9 +49,9 @@ namespace InventoryApi.Service
         }
 
 
-        public Item UpdateItem(Guid id, UpdateitemDto updateItemDto)
+        //TODO: Place id in item dto
+        public Item UpdateItem(UpdateitemDto updateItemDto)
         {
-
             if (string.IsNullOrWhiteSpace(updateItemDto.Name))
                 throw new ArgumentException("Name is required.");
 
@@ -61,8 +61,7 @@ namespace InventoryApi.Service
             if (string.IsNullOrWhiteSpace(updateItemDto.ItemType))
                 throw new ArgumentException("Item Type is required.");
 
-
-            var item = dbContext.Items.Find(id);
+            var item = dbContext.Items.Find(updateItemDto.Id);
             if (item == null)
                 return null;
 
@@ -77,7 +76,8 @@ namespace InventoryApi.Service
 
         public bool DeleteItem(Guid id)
         {
-            var item = dbContext.Items.Find(id);
+            //TODO: what if id is null, empty?
+            var item = dbContext.Items.Find(null);
             if (item == null)
                 return false;
 

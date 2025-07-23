@@ -1,6 +1,7 @@
 ﻿using InventoryApi.Data;
 using InventoryApi.Models;
 using InventoryApi.Models.Entities;
+using Microsoft.Extensions.Logging;
 
 namespace InventoryApi.Service
 {
@@ -41,6 +42,7 @@ namespace InventoryApi.Service
                 Name = dto.Name,
                 Email = dto.Email,
                 Role = dto.Role,
+                Password = dto.Password,
             };
 
             dbContext.Users.Add(user);
@@ -70,24 +72,40 @@ namespace InventoryApi.Service
             user.Name = dto.Name;
             user.Email = dto.Email;
             user.Role = dto.Role;
+            user.Password = dto.Password;
 
             dbContext.SaveChanges();
             return user;
 
         }
 
+
+
         public bool DeleteUser(Guid id)
         {
-            var user = dbContext.Users.Find(id);
-            if(user == null)
+            try
+            {
+                var user = dbContext.Users.Find(id);
+                if (user == null)
+                {
+                    return false;
+
+                }
+
+                dbContext.Users.Remove(user);
+                dbContext.SaveChanges();
+                return true;
+            }
+            catch(Exception ex)
             {
                 return false;
-
             }
+           
+        }
 
-            dbContext.Users.Remove(user);
-            dbContext.SaveChanges();
-            return true;
+        public User? GetUserByEmailAndPassword(string email, string password)
+        {
+            return dbContext.Users.SingleOrDefault(u => u.Email == email && u.Password == password);
         }
 
     }

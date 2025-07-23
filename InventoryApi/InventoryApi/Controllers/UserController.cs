@@ -1,6 +1,15 @@
 ﻿using InventoryApi.Models;
+using InventoryApi.Models.Entities;
 using InventoryApi.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+
 
 namespace InventoryApi.Controllers
 {
@@ -10,9 +19,11 @@ namespace InventoryApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserService userService;
+        private readonly IConfiguration _configuration;
 
-        public UserController(UserService userService)
+        public UserController(IConfiguration configuration, UserService userService)
         {
+            _configuration = configuration;
             this.userService = userService;
         }
 
@@ -58,14 +69,72 @@ namespace InventoryApi.Controllers
 
         [HttpDelete]
         [Route("{id:guid}")]
-
-        public IActionResult DeleteItems(Guid id)
+        
+        public IActionResult DeleteUsers(Guid id)
         {
-            var result = userService.DeleteUser(id);
-            if (!result)
-                return NotFound();
+            try
+            {
+                var result = userService.DeleteUser(id);
+                if (!result)
+                    return NotFound();
 
-            return Ok();
+                return Ok("User deleted");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error");
+            }
+
+
         }
+
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] LoginDto loginDto)
+        {
+            var user = userService.GetUserByEmailAndPassword(loginDto.Email, loginDto.Password);
+
+            if (user == null)
+                return Unauthorized("Invalid credentials");
+
+            var token = GenerateJwtToken(user);
+            return Ok(new { token });
+        }
+
+        private string GenerateJwtToken(User user)
+        {
+            var jwtSettings = _configuration.GetSection("JwtSettings");
+
+            var claims = new[]
+            {
+               new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+               new Claim(ClaimTypes.Role, user.Role ?? "User"),
+               new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: jwtSettings["Issuer"],
+                audience: jwtSettings["Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(Convert.ToDouble(jwtSettings["DurationInMinutes"])),
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+
+        //[Authorize(Roles = "ADMIN")]
+        //[HttpDelete("{id}")]
+        //public IActionResult Delete(Guid id)
+        //{
+        //    var success = userService.DeleteUser(id);
+        //    if (!success)
+        //        return NotFound();
+
+        //    return Ok("User deleted successfully");
+        //}
     }
 }

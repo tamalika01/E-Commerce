@@ -343,3 +343,4 @@ C:\Users\user\Desktop\My Projects\E-Commerce\InventoryApi\InventoryApi\obj\Debug
 C:\Users\user\Desktop\My Projects\E-Commerce\InventoryApi\InventoryApi\obj\Debug\net8.0\InventoryApi.pdb
 C:\Users\user\Desktop\My Projects\E-Commerce\InventoryApi\InventoryApi\obj\Debug\net8.0\InventoryApi.genruntimeconfig.cache
 C:\Users\user\Desktop\My Projects\E-Commerce\InventoryApi\InventoryApi\obj\Debug\net8.0\ref\InventoryApi.dll
+C:\Users\user\Desktop\My Projects\E-Commerce\InventoryApi\InventoryApi\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

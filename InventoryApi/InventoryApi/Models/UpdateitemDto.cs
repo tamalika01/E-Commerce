@@ -4,6 +4,9 @@ namespace InventoryApi.Models
 {
     public class UpdateitemDto
     {
+        [Required(ErrorMessage = "Id is required.")]
+        public Guid Id { get; set; }
+
         [Required(ErrorMessage = "Name is required.")]
         public required string Name { get; set; }
 

@@ -43,10 +43,9 @@ namespace InventoryApi.Controllers
         }
 
         [HttpPut]
-        [Route("{id:guid}")]
-        public IActionResult UpdateItems(Guid id, UpdateitemDto updateitemDto)
+        public IActionResult UpdateItems([FromBody] UpdateitemDto updateitemDto)
         {
-            var updatedItem = itemService.UpdateItem(id, updateitemDto);
+            var updatedItem = itemService.UpdateItem(updateitemDto);
             if (updatedItem == null)
                 return NotFound();
 
